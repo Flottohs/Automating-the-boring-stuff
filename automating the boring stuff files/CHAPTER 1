@@ -1,0 +1,8 @@
+print(type(42))
+print(type('hello'))
+print(type(3.14))
+print(type(True))
+#the library routine type finds the type of the value like integer or boolean
+
+print(abs(-25))
+#the library routine abs finds the absolute value of the number

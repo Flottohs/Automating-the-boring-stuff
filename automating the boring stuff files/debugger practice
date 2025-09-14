@@ -1,0 +1,13 @@
+print('Enter the first number to add:')
+first = input()
+print('Enter the second number to add:')
+second = input()
+print('Enter the third number to add:')
+third = input()
+print('The sum is ' + first + second + third)
+
+
+
+#how to use debugger in vs studio code
+#click debugger, add breakpoints- just stops running or starts running code from this area to help you find where problems are
+#breakpoints are the red dots as seen to the left
