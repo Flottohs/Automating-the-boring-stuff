@@ -1,0 +1,27 @@
+tableData = [['apples', 'oranges', 'cherries', 'banana'],
+             ['Alice', 'Bob', 'Carol', 'David'],
+             ['dogs', 'cats', 'moose', 'goose']]
+
+
+def format(tableData):
+    mytablehehe = []
+    for col in range(4):
+        for row in range(3):
+            mytablehehe.append(tableData[row][col])
+            
+    for i in range(0,16,4):
+        mytablehehe.insert(i, "\n")
+        
+        
+    stringtable = ' '.join(mytablehehe)
+        
+    print(stringtable)
+            
+        
+
+    
+    
+    
+    
+    
+format(tableData)
