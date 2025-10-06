@@ -1,0 +1,27 @@
+#Write a program that opens all .txt files in a folder and searches for any line that matches a user-supplied regular expression, then prints the results to the screen.
+
+from pathlib import Path
+import re
+
+
+print("\ncurrent version only works for mac\n")
+foldername = input("input folder's directory:\n ")
+user_regex = input("what is your regex expression?\n")
+
+p = Path(foldername)
+expression = re.compile(user_regex)  
+
+for file_path in p.glob('*'):
+    if file_path.is_file():
+        print(f"\nopening: {file_path}")
+        try:
+            content = file_path.read_text(encoding='utf-8')
+        except Exception as e:
+            print(f"could not read {file_path}: {e}")
+            continue
+        
+        matched = expression.findall(content)
+        if matched:
+            print(f"matches found in {file_path}: {matched}")
+        else:
+            print(f"no matches found in {file_path}")

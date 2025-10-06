@@ -1,0 +1,173 @@
+from pathlib import Path
+import os
+import time
+import shelve
+
+# ---------------------------
+# working with paths
+# ---------------------------
+
+# Path() constructs a file path using the correct path separators for the OS
+# example:
+# Path('spam', 'bacon', 'eggs')
+
+# you can combine path objects and strings using /
+# example:
+# Path('spam') / 'bacon' / 'eggs'
+
+# example of printing multiple file paths
+# my_files = ['accounts.txt', 'details.csv', 'invite.docx']
+# for filename in my_files:
+#     print(Path(r'/Users/Hayden', filename))
+
+
+# ---------------------------
+# current working directory
+# ---------------------------
+
+# every program has a current working directory (cwd)
+# relative paths are resolved from cwd
+# directory = folder
+print(Path.cwd())  # shows the current working directory
+
+# change cwd using os.chdir()
+# will raise FileNotFoundError if path doesn't exist
+# os.chdir('/Thisfiledoesnotexist')
+
+
+# ---------------------------
+# home directory
+# ---------------------------
+
+# access home directory
+home_dir = Path.home()
+
+
+# ---------------------------
+# absolute vs relative paths
+# ---------------------------
+
+# absolute path: starts from root folder (/ on mac/linux)
+# relative path: relative to the program's cwd
+
+# making relative paths absolute
+# Path.cwd() / Path('my/relative/path')
+# Path('my/relative/path').absolute()
+
+# if relative to another path (not cwd)
+# Path.home() / Path('my/relative/path')
+
+
+# ---------------------------
+# path components
+# ---------------------------
+
+# on mac, a file path is made of anchor, parent, and name
+p = Path('/Users/Al/spam.txt')
+p.anchor   # '/': root folder
+p.parent   # '/Users/Al': parent folder
+p.name     # 'spam.txt': file/folder name
+p.parts    # ('/', 'Users', 'Al', 'spam.txt')
+p.parts[3] # 'spam.txt'
+p.parts[0:2] # ('/', 'Users')
+
+# access parent folders (ancestry)
+Path.cwd().parents[0]
+
+
+# ---------------------------
+# creating folders
+# ---------------------------
+
+# using os.makedirs
+# os.makedirs('//delicious//walnet//waffles')
+
+# using Path object
+# Path(r'/Users/Al/spam').mkdir()
+
+
+# ---------------------------
+# checking path type and existence
+# ---------------------------
+
+p = Path('example.txt')
+p.exists()    # True if path exists
+p.is_file()   # True if path exists and is a file
+p.is_dir()    # True if path exists and is a directory
+p.is_absolute()  # True if path is absolute
+
+
+# ---------------------------
+# file size and timestamps
+# ---------------------------
+
+calc_file = Path('/users/meow/pow')
+stat = calc_file.stat()  # returns stat_result object
+
+stat.st_size   # file size in bytes
+stat.st_mtime  # last modified timestamp
+stat.st_ctime  # last metadata change (mac) / creation time (windows)
+stat.st_atime  # last accessed timestamp
+
+# converting timestamp to readable date
+time.asctime(time.localtime(stat.st_mtime))
+
+
+# ---------------------------
+# finding files with glob patterns
+# ---------------------------
+
+# glob patterns (simplified regex)
+# *     = matches any text
+# ?     = matches exactly one character
+
+# examples:
+# *.txt            -> matches all .txt files
+# project?.txt     -> matches project1.txt, projectA.txt, etc.
+# *project?.txt.*  -> matches catproject5.txt
+
+# using glob with Path
+p = Path('/users/programming/in_school')
+list(p.glob('*'))  # all files in folder
+
+for name in p.glob('*'):
+    print(name)
+
+
+# ---------------------------
+# reading and writing files
+# ---------------------------
+
+p = Path('spam.txt')
+
+# read/write entire file as string
+p.read_text()            # returns full text
+p.write_text('hello')    # writes string to file
+
+# more complex operations use open()
+with open('data.txt', 'w', encoding='UTF-8') as f:
+    f.write('Hello world')
+
+# readlines(): returns list of strings, one per line
+with open('data.txt', 'r', encoding='UTF-8') as f:
+    lines = f.readlines()
+
+
+# ---------------------------
+# saving variables with shelve
+# ---------------------------
+
+# shelve allows you to save variables to a binary shelf file
+# this lets your program restore data next time it's run
+
+shelf_file = shelve.open('mydata')
+shelf_file['cats'] = ['Zophie', 'Pooka', 'Simon']
+shelf_file.close()
+
+# retrieving data
+shelf_file = shelve.open('mydata')
+cats_list = shelf_file['cats']
+
+# keys and values
+list(shelf_file.keys())
+list(shelf_file.values())

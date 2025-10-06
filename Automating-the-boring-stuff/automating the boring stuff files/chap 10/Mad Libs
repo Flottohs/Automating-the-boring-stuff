@@ -1,0 +1,30 @@
+'''Create a Mad Libs program that reads in text files and lets the user add their own text anywhere the word ADJECTIVE, NOUN, ADVERB, or VERB appears in the text file. For example, a text file may look like this:
+
+The ADJECTIVE panda walked to the NOUN and then VERB. A nearby NOUN was
+unaffected by these events.'''
+
+
+
+with open('textfile.txt', 'r', encoding='utf-8') as f:
+    content = f.read()
+
+# get user input
+print('\nWhat would you like your Noun to be?')
+noun = input()
+print('\nWhat would you like your Adjective to be?')
+adjective = input()
+print('\nWhat would you like your Verb to be?')
+verb = input()
+
+# replace placeholders and assign back to content
+content = content.replace('NOUN', noun)
+content = content.replace('ADJECTIVE', adjective)
+content = content.replace('VERB', verb)
+
+# write to new file
+with open('Madlibs_file.txt', 'w', encoding='utf-8') as r:
+    r.write(content)
+
+# print the result directly from the content variable
+print('\nSuccess!\nYour madlibs poem reads:\n', content)
+
